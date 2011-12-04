@@ -49,7 +49,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README.txt
+%doc CHANGES.txt CONTRIBUTORS.txt README.txt
 %{py_sitescriptdir}/%{module}
 %{py_sitescriptdir}/%{module}-*.egg-info
 %{_examplesdir}/%{name}-%{version}
