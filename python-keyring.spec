@@ -2,7 +2,7 @@
 Summary:	Python library to access the system keyring service
 Name:		python-%{module}
 Version:	0.6.2
-Release:	1
+Release:	2
 Source0:	http://pypi.python.org/packages/source/k/keyring/%{module}-%{version}.tar.gz
 # Source0-md5:	b21b5783c375fc09abdc060b4edc062f
 License:	Python
