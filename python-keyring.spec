@@ -9,7 +9,7 @@ License:	Python
 Group:		Development/Libraries
 URL:		http://pypi.python.org/pypi/keyring
 BuildRequires:	python-devel
-BuildRequires:	rpmbuild(macros) >= 1.219
+BuildRequires:	rpmbuild(macros) >= 1.710
 # CryptedFileKeyring
 Suggests:	python-Crypto
 # KDEKWallet
