@@ -9,12 +9,12 @@
 Summary:	Python 2 library to access the system keyring service
 Summary(pl.UTF-8):	Biblioteka Pythona 2 do dostępu do systemowego pęku kluczy
 Name:		python-%{module}
-Version:	9.0
+Version:	9.3.1
 Release:	1
 License:	MIT, PSF
 Group:		Libraries/Python
-Source0:	https://pypi.python.org/packages/source/k/keyring/%{module}-%{version}.tar.gz
-# Source0-md5:	7b88030ba5936e95b71c04a069ba111c
+Source0:	https://pypi.python.org/packages/7e/84/65816c2936cf7191bcb5b3e3dc4fb87def6f8a38be25b3a78131bbb08594/%{module}-%{version}.tar.gz
+# Source0-md5:	934aad9f3cdcc860029a0122fb5f67bb
 URL:		https://pypi.python.org/pypi/keyring
 BuildRequires:	rpmbuild(macros) >= 1.710
 %if %{with python2}
