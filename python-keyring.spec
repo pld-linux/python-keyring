@@ -9,41 +9,40 @@
 Summary:	Python 2 library to access the system keyring service
 Summary(pl.UTF-8):	Biblioteka Pythona 2 do dostępu do systemowego pęku kluczy
 Name:		python-%{module}
-Version:	9.3.1
-Release:	2
+Version:	10.3
+Release:	1
 License:	MIT, PSF
 Group:		Libraries/Python
-Source0:	https://pypi.python.org/packages/7e/84/65816c2936cf7191bcb5b3e3dc4fb87def6f8a38be25b3a78131bbb08594/%{module}-%{version}.tar.gz
-# Source0-md5:	934aad9f3cdcc860029a0122fb5f67bb
+Source0:	https://pypi.python.org/packages/d2/2f/b70bf3068b5964e4c45507e03652da0743c72460ff929e70aef201ed5ffb/%{module}-%{version}.tar.gz
+# Source0-md5:	8a6a4617a70c8776da24a02fb63b3ecd
 URL:		https://pypi.python.org/pypi/keyring
-BuildRequires:	rpmbuild(macros) >= 1.710
 %if %{with python2}
 BuildRequires:	python-devel >= 1:2.7
 BuildRequires:	python-setuptools
-BuildRequires:	python-setuptools_scm >= 1.9
+BuildRequires:	python-setuptools_scm >= 1.15.0
 %if %{with tests}
 BuildRequires:	python-pytest >= 2.8
-BuildRequires:	python-pytest-runner
+BuildRequires:	python-secretstorage
 %endif
 %endif
 %if %{with python3}
-BuildRequires:	python3-devel >= 1:3.2
+BuildRequires:	python3-devel >= 1:3.3
 BuildRequires:	python3-setuptools
-BuildRequires:	python3-setuptools_scm >= 1.9
+BuildRequires:	python3-setuptools_scm >= 1.15.0
 %if %{with tests}
 BuildRequires:	python3-pytest >= 2.8
-BuildRequires:	python3-pytest-runner
+BuildRequires:	python3-secretstorage
 %endif
 %endif
 %if %{with doc}
 BuildRequires:	python3-Sphinx
 BuildRequires:	python3-rst.linker
 %endif
+BuildRequires:	rpm-pythonprov
+BuildRequires:	rpmbuild(macros) >= 1.714
 Requires:	python-modules >= 1:2.7
 # kwalletd5 through dbus
 Suggests:	python-dbus
-# SecretService
-Suggests:	python-secretstorage
 Obsoletes:	python-keyring-gnome < 0.5.1
 Obsoletes:	python-keyring-kwallet < 0.5.1
 BuildArch:	noarch
@@ -66,8 +65,6 @@ Group:		Libraries/Python
 Requires:	python3-modules >= 1:3.3
 # kwalletd5 through dbus
 Suggests:	python-dbus
-# SecretService
-Suggests:	python-secretstorage
 
 %description -n python3-%{module}
 The Python keyring lib provides a easy way to access the system
@@ -95,11 +92,15 @@ Dokumentacja API biblioteki Pythona keyring.
 
 %build
 %if %{with python2}
-%py_build %{?with_tests:test}
+%py_build
+
+%{?with_tests:%{__python} -m pytest}
 %endif
 
 %if %{with python3}
-%py3_build %{?with_tests:test} %{?with_doc:build_sphinx}
+%py3_build %{?with_doc:build_sphinx}
+
+%{?with_tests:%{__python3} -m pytest}
 %endif
 
 %install
