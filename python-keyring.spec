@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_without	doc	# Sphinx documentation
-%bcond_with	tests	# test target [broken with \--build-base]
+%bcond_without	tests	# py.test tests
 %bcond_without	python2 # CPython 2.x module
 %bcond_without	python3 # CPython 3.x module
 
@@ -9,12 +9,13 @@
 Summary:	Python 2 library to access the system keyring service
 Summary(pl.UTF-8):	Biblioteka Pythona 2 do dostępu do systemowego pęku kluczy
 Name:		python-%{module}
-Version:	10.3
+Version:	10.3.2
 Release:	1
 License:	MIT, PSF
 Group:		Libraries/Python
-Source0:	https://pypi.python.org/packages/d2/2f/b70bf3068b5964e4c45507e03652da0743c72460ff929e70aef201ed5ffb/%{module}-%{version}.tar.gz
-# Source0-md5:	8a6a4617a70c8776da24a02fb63b3ecd
+#Source0Download: https://pypi.python.org/simple/keyring
+Source0:	https://files.pythonhosted.org/packages/source/k/keyring/%{module}-%{version}.tar.gz
+# Source0-md5:	20a2b23488b9da0c248b6c21a5d1154f
 URL:		https://pypi.python.org/pypi/keyring
 %if %{with python2}
 BuildRequires:	python-devel >= 1:2.7
@@ -94,13 +95,13 @@ Dokumentacja API biblioteki Pythona keyring.
 %if %{with python2}
 %py_build
 
-%{?with_tests:%{__python} -m pytest}
+%{?with_tests:PYTHON_PATH=$(pwd)/build-2/lib %{__python} -m pytest tests keyring/tests}
 %endif
 
 %if %{with python3}
 %py3_build %{?with_doc:build_sphinx}
 
-%{?with_tests:%{__python3} -m pytest}
+%{?with_tests:PYTHON_PATH=$(pwd)/build-3/lib %{__python3} -m pytest tests keyring/tests}
 %endif
 
 %install
