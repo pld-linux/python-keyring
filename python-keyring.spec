@@ -10,7 +10,7 @@ Summary:	Python 2 library to access the system keyring service
 Summary(pl.UTF-8):	Biblioteka Pythona 2 do dostępu do systemowego pęku kluczy
 Name:		python-%{module}
 Version:	10.3.2
-Release:	1
+Release:	2
 License:	MIT, PSF
 Group:		Libraries/Python
 #Source0Download: https://pypi.python.org/simple/keyring
@@ -110,7 +110,8 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python3}
 %py3_install
 
-%{__rm} -r $RPM_BUILD_ROOT%{py3_sitescriptdir}/%{module}/tests
+# keep base tests classes (for e.g. python-keyrings.alt tests), remove just backends unit tests
+%{__rm} -r $RPM_BUILD_ROOT%{py3_sitescriptdir}/keyring/tests/backends
 # "keyring" name is too generic, add -py[version] suffix
 %{__mv} $RPM_BUILD_ROOT%{_bindir}/keyring{,-py3}
 %endif
@@ -119,7 +120,9 @@ rm -rf $RPM_BUILD_ROOT
 %py_install
 
 %py_postclean
-%{__rm} -r $RPM_BUILD_ROOT%{py_sitescriptdir}/%{module}/tests
+
+# keep base tests classes (for e.g. python-keyrings.alt tests), remove just backends unit tests
+%{__rm} -r $RPM_BUILD_ROOT%{py_sitescriptdir}/keyring/tests/backends
 # "keyring" name is too generic, add -py[version] suffix
 %{__mv} $RPM_BUILD_ROOT%{_bindir}/keyring{,-py2}
 ln -sf keyring-py2 $RPM_BUILD_ROOT%{_bindir}/keyring-py
