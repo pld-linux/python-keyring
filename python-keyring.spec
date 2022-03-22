@@ -9,20 +9,23 @@
 Summary:	Python 2 library to access the system keyring service
 Summary(pl.UTF-8):	Biblioteka Pythona 2 do dostępu do systemowego pęku kluczy
 Name:		python-%{module}
-Version:	10.3.2
-Release:	4
+# keep 18.x here for python2 support
+Version:	18.0.1
+Release:	1
 License:	MIT, PSF
 Group:		Libraries/Python
 #Source0Download: https://pypi.python.org/simple/keyring
 Source0:	https://files.pythonhosted.org/packages/source/k/keyring/%{module}-%{version}.tar.gz
-# Source0-md5:	20a2b23488b9da0c248b6c21a5d1154f
+# Source0-md5:	00cdec34da9c15ad804441979b70830b
 URL:		https://pypi.python.org/pypi/keyring
 %if %{with python2}
 BuildRequires:	python-devel >= 1:2.7
 BuildRequires:	python-setuptools
 BuildRequires:	python-setuptools_scm >= 1.15.0
 %if %{with tests}
+BuildRequires:	python-entrypoints
 BuildRequires:	python-pytest >= 2.8
+BuildRequires:	python-pytest-flake8
 BuildRequires:	python-secretstorage
 %endif
 %endif
@@ -31,13 +34,16 @@ BuildRequires:	python3-devel >= 1:3.3
 BuildRequires:	python3-setuptools
 BuildRequires:	python3-setuptools_scm >= 1.15.0
 %if %{with tests}
+BuildRequires:	python3-entrypoints
 BuildRequires:	python3-pytest >= 2.8
+BuildRequires:	python3-pytest-flake8
 BuildRequires:	python3-secretstorage
 %endif
 %endif
 %if %{with doc}
-BuildRequires:	python3-Sphinx
-BuildRequires:	python3-rst.linker
+BuildRequires:	python-Sphinx
+BuildRequires:	python-jaraco.packaging >= 3.2
+BuildRequires:	python-rst.linker >= 1.9
 %endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
@@ -93,15 +99,25 @@ Dokumentacja API biblioteki Pythona keyring.
 
 %build
 %if %{with python2}
-%py_build
+%py_build %{?with_doc:build_sphinx}
 
-%{?with_tests:PYTHON_PATH=$(pwd)/build-2/lib %{__python} -m pytest tests keyring/tests}
+%if %{with tests}
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+PYTEST_PLUGINS="pytest_flake8" \
+PYTHONPATH=$(pwd)/build-2/lib \
+%{__python} -m pytest tests keyring/tests
+%endif
 %endif
 
 %if %{with python3}
-%py3_build %{?with_doc:build_sphinx}
+%py3_build
 
-%{?with_tests:PYTHON_PATH=$(pwd)/build-3/lib %{__python3} -m pytest tests keyring/tests}
+%if %{with tests}
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+PYTEST_PLUGINS="pytest_flake8" \
+PYTHONPATH=$(pwd)/build-3/lib \
+%{__python3} -m pytest tests keyring/tests
+%endif
 %endif
 
 %install
@@ -150,8 +166,8 @@ rm -rf $RPM_BUILD_ROOT
 %{py3_sitescriptdir}/keyring-%{version}-py*.egg-info
 %endif
 
-%if %{with python3} && %{with doc}
+%if %{with python2} && %{with doc}
 %files apidocs
 %defattr(644,root,root,755)
-%doc build-3/sphinx/html/{_static,*.html,*.js}
+%doc build-2/sphinx/html/{_static,*.html,*.js}
 %endif
