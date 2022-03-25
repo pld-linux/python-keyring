@@ -11,7 +11,7 @@ Summary(pl.UTF-8):	Biblioteka Pythona 2 do dostępu do systemowego pęku kluczy
 Name:		python-%{module}
 # keep 18.x here for python2 support
 Version:	18.0.1
-Release:	2
+Release:	3
 License:	MIT, PSF
 Group:		Libraries/Python
 #Source0Download: https://pypi.python.org/simple/keyring
